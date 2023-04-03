@@ -1,29 +1,10 @@
-from tkinter import Tk, ttk
-from tkinter.filedialog import askopenfilename, asksaveasfilename
+from tkinter import Menu, Tk, messagebox, ttk
 
-from PIL import Image
-
-from NetworkScanning import NetScan, SetMainPage
-
-TITLE_FONT = ("Helvetica", 16, "bold")
-FALSE = False
-function = 'function'
-
-# images
-img_IPtest = Image.open('./Images/IPtest_img.png')
-img_ALL_IPimg = Image.open('./Images/ALL_IP_img.png')
-img_go = Image.open('./Images/go_img.png')
-img_one_IPtes = Image.open('./Images/one_IPtest_img.png')
-
-# 定义图片尺寸
-IPtest_image = img_IPtest.resize((60, 60), Image.ANTIALIAS)
-ALL_IPimg_image = img_ALL_IPimg.resize((60, 60), Image.ANTIALIAS)
-one_IPtest_image = img_one_IPtes.resize((60, 60), Image.ANTIALIAS)
-
-go_image = img_go.resize((25, 25), Image.ANTIALIAS)
+from IPScanning import NetScan, oneIPtest
+from mclCalculator import NetCalculator
 
 
-class Network_Test(Tk):
+class NetToolbox(Tk):
     """
     MainApp
     """
@@ -46,22 +27,63 @@ class Network_Test(Tk):
         for j in range(0, 25):
             tc = mainframe.columnconfigure(j, weight=1)
             self.big.append(tc)
-        # self.geometry("600x300")
         self.frames = {}
-        for F in (SetMainPage.StartPage, NetScan.Network_scan):
+        for F in (LayoutPage, NetScan.NetScan, oneIPtest.oneIPtest, NetCalculator.NetCalculator):
             page_name = F.__name__
             frame = F(parent=mainframe, mainframe=self)
             self.frames[page_name] = frame
 
             frame.grid(row=0, column=0, sticky="nsew")
 
-        self.show_frame("StartPage")
+        self.show_frame("LayoutPage")
+        self.show_frame("oneIPtest")
 
     def show_frame(self, page_name):
         frame = self.frames[page_name]
         frame.tkraise()
 
 
+class LayoutPage(ttk.Frame):
+    """
+    初始界面
+    """
+
+    def __init__(self, parent, mainframe):
+        ttk.Frame.__init__(self, parent)
+        self.mainframe = mainframe
+        self.mainframe.title("NetToolbox")
+
+        # 菜单栏
+        self.mainframe.option_add('*tearOff', False)
+        menubar = Menu(self.mainframe)
+        self.mainframe['menu'] = menubar
+        menu_tools = Menu(menubar)
+        menu_help = Menu(menubar)
+        menubar.add_cascade(menu=menu_tools, label='工具库(Tools)')
+        menu_tools.add_command(label='IP地址测试(IP Test)',
+                               command=lambda: mainframe.show_frame("oneIPtest"))
+        menu_tools.add_command(label='网段扫描(Network scanning)',
+                               command=lambda: mainframe.show_frame("NetScan"))
+        menu_tools.add_command(label='IP地址计算器(IPCalculator)',
+                               command=lambda: mainframe.show_frame("NetCalculator"))
+
+        menubar.add_cascade(menu=menu_help, label='帮助(H)')
+        menu_help.add_command(
+            label='关于(About)', command=lambda: self.AboutPage())
+
+    def AboutPage(self):
+        messagebox.showinfo('网络测试',
+                            """
+        版本: 1.0
+        提交：
+        日期: 2023-04-20 11:30
+        Python 3.11.2
+        Pillow 9.4.0
+        源码发布于: https://github.com/KaneSuperman/NetToolbox
+        """
+                            )
+
+
 if __name__ == "__main__":
-    app = Network_Test()
+    app = NetToolbox()
     app.mainloop()

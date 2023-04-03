@@ -1,32 +1,22 @@
 import datetime
 import platform
 import subprocess
-from tkinter import Listbox, Menu, StringVar, messagebox, ttk
-from tkinter.filedialog import askopenfilename, asksaveasfilename
+from tkinter import Listbox, StringVar, messagebox, ttk
 
 from PIL import Image, ImageTk
 
 TITLE_FONT = ("Helvetica", 16, "bold")
-FALSE = False
 function = 'function'
 
 
 # images
-img_IPtest = Image.open('./Images/IPtest_img.png')
-img_ALL_IPimg = Image.open('./Images/ALL_IP_img.png')
-img_go = Image.open('./Images/go_img.png')
 img_one_IPtes = Image.open('./Images/one_IPtest_img.png')
 
 # 定义图片尺寸
-IPtest_image = img_IPtest.resize((60, 60), Image.ANTIALIAS)
-ALL_IPimg_image = img_ALL_IPimg.resize((60, 60), Image.ANTIALIAS)
 one_IPtest_image = img_one_IPtes.resize((60, 60), Image.ANTIALIAS)
 
 
-go_image = img_go.resize((25, 25), Image.ANTIALIAS)
-
-
-class StartPage(ttk.Frame):
+class oneIPtest(ttk.Frame):
     """
     初始界面
     """
@@ -34,23 +24,6 @@ class StartPage(ttk.Frame):
     def __init__(self, parent, mainframe):
         ttk.Frame.__init__(self, parent)
         self.mainframe = mainframe
-        self.mainframe.title("网络测试(NetworkTest)")
-
-        # 菜单栏
-        self.mainframe.option_add('*tearOff', FALSE)
-        menubar = Menu(self.mainframe)
-        self.mainframe['menu'] = menubar
-        menu_tools = Menu(menubar)
-        menu_help = Menu(menubar)
-        menubar.add_cascade(menu=menu_tools, label='工具库(Tools)')
-        menubar.add_cascade(menu=menu_help, label='帮助(H)')
-        menu_tools.add_command(label='IP地址测试(IP Test)',
-                               command=lambda: mainframe.show_frame("StartPage"))
-        menu_help.add_command(
-            label='关于(About)', command=lambda: self.About_view())
-        menu_tools.add_command(label='网段扫描(Network scanning)',
-                               command=lambda: mainframe.show_frame("Network_scan"))
-
         # 单个地址测试
         self.one_IPtest_img = ImageTk.PhotoImage(one_IPtest_image)
         self.IPtest = ttk.Label(self, text='IP地址测试',
@@ -185,14 +158,6 @@ class StartPage(ttk.Frame):
     def Stop_Popen(self):
         self.stop_IPtest.set('0')
 
-    def About_view(self):
-        messagebox.showinfo('网络测试', """    版本: 0.2
-    日期: 2019-02-05 11:30
-    Python: 3.7.0
-    源码发布于: https://github.com/ErickQian/NetworkScanning
-    """)
-
-
 if __name__ == "__main__":
-    app = StartPage()
+    app = oneIPtest()
     app.mainloop()

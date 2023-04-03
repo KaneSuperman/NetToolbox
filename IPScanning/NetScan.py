@@ -3,7 +3,6 @@ import re
 import subprocess
 import threading
 from tkinter import StringVar, messagebox, ttk
-from tkinter.filedialog import askopenfilename, asksaveasfilename
 
 from PIL import Image, ImageTk
 
@@ -14,19 +13,13 @@ function = 'function'
 
 # images
 img_IPtest = Image.open('./Images/IPtest_img.png')
-img_ALL_IPimg = Image.open('./Images/ALL_IP_img.png')
-img_go = Image.open('./Images/go_img.png')
-img_one_IPtes = Image.open('./Images/one_IPtest_img.png')
 
 # 定义图片尺寸
 IPtest_image = img_IPtest.resize((60, 60), Image.ANTIALIAS)
-ALL_IPimg_image = img_ALL_IPimg.resize((60, 60), Image.ANTIALIAS)
-one_IPtest_image = img_one_IPtes.resize((60, 60), Image.ANTIALIAS)
-
-go_image = img_go.resize((25, 25), Image.ANTIALIAS)
 
 
-class Network_scan(ttk.Frame):
+
+class NetScan(ttk.Frame):
     """
     网段扫描工具
     """
@@ -178,5 +171,5 @@ class Network_scan(ttk.Frame):
 
 
 if __name__ == "__main__":
-    app = Network_scan()
+    app = NetScan()
     app.mainloop()
